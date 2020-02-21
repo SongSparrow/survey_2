@@ -7,6 +7,61 @@
     <!--  Start : Your code should be within this block -->
 
 
+    <TextView
+        android:id="@+id/txtTitle6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_20dp"
+        android:layout_marginTop="@dimen/margin_30dp"
+        android:layout_marginRight="@dimen/margin_20dp"
+        android:layout_marginBottom="@dimen/margin_zero"
+        android:text="@string/txt_title6"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/font_size_large" />
+
+    <TextView
+        android:id="@+id/txtQuestion6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_40dp"
+        android:layout_marginTop="@dimen/margin_30dp"
+        android:layout_marginRight="@dimen/margin_40dp"
+        android:layout_marginBottom="@dimen/margin_5dp"
+        android:text="@string/txt_question6"
+        android:textSize="@dimen/font_size_middle" />
+
+    <EditText
+        android:id="@+id/edtAnswer6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_40dp"
+        android:layout_marginTop="@dimen/margin_5dp"
+        android:layout_marginRight="@dimen/margin_40dp"
+        android:layout_marginBottom="@dimen/margin_5dp"
+        android:ems="10"
+        android:hint="@string/txt_answer_hint"
+        android:inputType="textPersonName"
+        android:textSize="@dimen/font_size_middle" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btnNext6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_20dp"
+        android:layout_marginTop="@dimen/margin_5dp"
+        android:layout_marginRight="@dimen/margin_20dp"
+        android:layout_marginBottom="@dimen/margin_30dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/btn_next"
+        android:textSize="@dimen/font_size_middle"
+        android:onClick="onClickNext"/>
+
+
     <!-- END    : Your code should be within this block -->
 
 </LinearLayout>
