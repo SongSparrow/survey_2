@@ -19,7 +19,7 @@
         android:textSize="@dimen/font_size_large" />
 
     <TextView
-        android:id="@+id/txtQuestion2"
+        android:id="@+id/txt_question2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_40dp"
@@ -29,6 +29,7 @@
         android:textSize="@dimen/font_size_middle" />
 
     <RadioGroup
+        android:id="@+id/rg_question2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="@dimen/margin_50dp"

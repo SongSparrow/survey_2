@@ -39,6 +39,7 @@
         android:layout_weight="1">
 
         <RadioGroup
+            android:id="@+id/rg_question4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_zero">
@@ -52,7 +53,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <CheckBox
-                android:id="@+id/cbPhoto"
+                android:id="@+id/cb_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"

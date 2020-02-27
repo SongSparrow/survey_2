@@ -78,4 +78,8 @@
     <string name="btn_finish">finish</string>
     <string name="img_cd">Thank you for your answers.</string>
     <string name="accept_requests">Please accept our requests!</string>
+    <string name="btn_exit">exit</string>
+    <string name="report_title">Here are your answers!</string>
+    <string name="report_answer">your answer</string>
+    <string name="empty_answer">Please choose a answer at least!</string>
 </resources>
