@@ -34,6 +34,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     public void onClickExit(View view){
-        super.finish();
+        finish();
+        getParent().finish();
     }
 }
