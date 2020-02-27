@@ -8,26 +8,26 @@
 
 
     <TextView
-        android:id="@+id/txtTitle8"
+        android:id="@+id/txt_title8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_20dp"
         android:layout_marginBottom="@dimen/margin_30dp"
-        android:text="@string/txt_title8"
+        android:text="@string/str_title8"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_size_large" />
 
     <TextView
-        android:id="@+id/txtQuestion8"
+        android:id="@+id/txt_question8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_40dp"
         android:layout_marginTop="@dimen/margin_zero"
         android:layout_marginRight="@dimen/margin_40dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_question1"
+        android:text="@string/str_question1"
         android:textSize="@dimen/font_size_middle" />
 
     <ScrollView
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content">
 
             <RadioButton
-                android:id="@+id/Iphone"
+                android:id="@+id/iphone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -52,7 +52,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/Nokia"
+                android:id="@+id/nokia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -60,7 +60,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/Samsung"
+                android:id="@+id/samsung"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -68,7 +68,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/MI"
+                android:id="@+id/mi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -76,7 +76,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/Lenovo"
+                android:id="@+id/lenovo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -84,7 +84,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/Sony"
+                android:id="@+id/sony"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -92,7 +92,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/Others"
+                android:id="@+id/others"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -103,7 +103,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btnNext8"
+        android:id="@+id/btn_next8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

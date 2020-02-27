@@ -7,26 +7,26 @@
     <!--  Start : Your code should be within this block -->
 
     <TextView
-        android:id="@+id/txtTitle7"
+        android:id="@+id/txt_title7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_20dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_title7"
+        android:text="@string/str_title7"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_size_large" />
 
     <TextView
-        android:id="@+id/txtQuestion7"
+        android:id="@+id/txt_question7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_40dp"
         android:layout_marginTop="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_40dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_question7"
+        android:text="@string/str_question7"
         android:textSize="@dimen/font_size_middle" />
 
     <ScrollView
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content">
 
             <RadioButton
-                android:id="@+id/rbOneYear"
+                android:id="@+id/rb_one_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -51,7 +51,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/rbThreeYear"
+                android:id="@+id/rb_three_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -59,7 +59,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/rbOldBreakDown"
+                android:id="@+id/rb_old_break_down"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -67,7 +67,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/rbNewReleased"
+                android:id="@+id/rb_new_released"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -75,7 +75,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <RadioButton
-                android:id="@+id/rbOthers7"
+                android:id="@+id/rb_others7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -85,7 +85,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btnNext7"
+        android:id="@+id/btn_next7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"

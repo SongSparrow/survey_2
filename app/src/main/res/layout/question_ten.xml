@@ -7,26 +7,26 @@
     <!--  Start : Your code should be within this block -->
 
     <TextView
-        android:id="@+id/txtTitle10"
+        android:id="@+id/txt_title10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_20dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_title10"
+        android:text="@string/str_title10"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_size_large" />
 
     <TextView
-        android:id="@+id/txtQuestion10"
+        android:id="@+id/txt_question10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_40dp"
         android:layout_marginTop="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_40dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_question10"
+        android:text="@string/str_question10"
         android:textSize="@dimen/font_size_middle" />
 
     <RadioGroup
@@ -39,7 +39,7 @@
         android:layout_weight="1">
 
         <RadioButton
-            android:id="@+id/rbUnder18"
+            android:id="@+id/rb_under18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_5dp"
@@ -55,7 +55,7 @@
             android:textSize="@dimen/font_size_average" />
 
         <RadioButton
-            android:id="@+id/rb25to35"
+            android:id="@+id/rb_25to35"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_5dp"
@@ -63,7 +63,7 @@
             android:textSize="@dimen/font_size_average" />
 
         <RadioButton
-            android:id="@+id/rbBeyond35"
+            android:id="@+id/rb_beyond35"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_5dp"
@@ -72,7 +72,7 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/btnNext10"
+        android:id="@+id/btn_next10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"

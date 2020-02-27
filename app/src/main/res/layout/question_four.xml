@@ -7,26 +7,26 @@
     <!--  Start : Your code should be within this block -->
 
     <TextView
-        android:id="@+id/txtTitle4"
+        android:id="@+id/txt_title4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_20dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_title4"
+        android:text="@string/str_title4"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_size_large" />
 
     <TextView
-        android:id="@+id/txtQuestion4"
+        android:id="@+id/txt_question4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_40dp"
         android:layout_marginTop="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_40dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_question4"
+        android:text="@string/str_question4"
         android:textSize="@dimen/font_size_middle" />
 
     <ScrollView
@@ -44,7 +44,7 @@
             android:layout_margin="@dimen/margin_zero">
 
             <CheckBox
-                android:id="@+id/cbMusic"
+                android:id="@+id/cb_music"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -60,7 +60,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <CheckBox
-                android:id="@+id/cbGame"
+                android:id="@+id/cb_game"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -68,7 +68,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <CheckBox
-                android:id="@+id/cbBusiness"
+                android:id="@+id/cb_business"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -76,7 +76,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <CheckBox
-                android:id="@+id/cbGPS"
+                android:id="@+id/cb_gps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -84,7 +84,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <CheckBox
-                android:id="@+id/cbData"
+                android:id="@+id/cb_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -92,7 +92,7 @@
                 android:textSize="@dimen/font_size_average" />
 
             <CheckBox
-                android:id="@+id/cbOthers"
+                android:id="@+id/cb_others"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_5dp"
@@ -102,7 +102,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btnNext4"
+        android:id="@+id/btn_next4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"

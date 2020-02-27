@@ -8,31 +8,31 @@
     <!--  Start : Your code should be within this block -->
 
     <TextView
-        android:id="@+id/txtThx"
+        android:id="@+id/txt_thx"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_30dp"
         android:layout_marginTop="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_30dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_thxu"
+        android:text="@string/str_thxu"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_size_large" />
 
     <TextView
-        android:id="@+id/txtThxFor"
+        android:id="@+id/txt_thx_for"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_30dp"
         android:layout_marginTop="@dimen/margin_zero"
         android:layout_marginRight="@dimen/margin_30dp"
         android:layout_marginBottom="@dimen/margin_30dp"
-        android:text="@string/txt_thx_for"
+        android:text="@string/str_thx_for"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_size_middle" />
 
     <ImageView
-        android:id="@+id/imgThx"
+        android:id="@+id/img_thx"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="@dimen/margin_30dp"
@@ -44,7 +44,7 @@
         android:src="@drawable/bili_girl" />
 
     <Button
-        android:id="@+id/btnFinish"
+        android:id="@+id/btn_finish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"

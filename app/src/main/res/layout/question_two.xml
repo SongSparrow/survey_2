@@ -7,14 +7,14 @@
     <!--  Start : Your code should be within this block -->
 
     <TextView
-        android:id="@+id/txtTitle2"
+        android:id="@+id/txt_title2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_20dp"
         android:layout_marginBottom="@dimen/margin_30dp"
-        android:text="@string/txt_title2"
+        android:text="@string/str_title2"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_size_large" />
 
@@ -25,7 +25,7 @@
         android:layout_marginLeft="@dimen/margin_40dp"
         android:layout_marginRight="@dimen/margin_40dp"
         android:layout_marginBottom="@dimen/margin_30dp"
-        android:text="@string/txt_question2"
+        android:text="@string/str_question2"
         android:textSize="@dimen/font_size_middle" />
 
     <RadioGroup
@@ -36,7 +36,7 @@
         android:layout_weight="1">
 
         <RadioButton
-            android:id="@+id/rbFirstClass"
+            android:id="@+id/rb_first_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_5dp"
@@ -44,7 +44,7 @@
             android:textSize="@dimen/font_size_average" />
 
         <RadioButton
-            android:id="@+id/rbSecondClass"
+            android:id="@+id/rb_second_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_5dp"
@@ -52,7 +52,7 @@
             android:textSize="@dimen/font_size_average" />
 
         <RadioButton
-            android:id="@+id/rbThirdClass"
+            android:id="@+id/rb_third_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_5dp"
@@ -60,7 +60,7 @@
             android:textSize="@dimen/font_size_average" />
 
         <RadioButton
-            android:id="@+id/rbForthClass"
+            android:id="@+id/rb_forth_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_5dp"
@@ -68,7 +68,7 @@
             android:textSize="@dimen/font_size_average" />
 
         <RadioButton
-            android:id="@+id/rbFifthClass"
+            android:id="@+id/rb_fifth_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_5dp"
@@ -78,7 +78,7 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/btnNext2"
+        android:id="@+id/btn_next2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_20dp"

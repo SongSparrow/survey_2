@@ -6,14 +6,14 @@
     <!--  Start : Your code should be within this block -->
 
     <TextView
-        android:id="@+id/txtWelcome"
+        android:id="@+id/txt_welcome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="40dp"
         android:layout_marginRight="40dp"
         android:padding="0dp"
-        android:text="@string/txt_welcome"
+        android:text="@string/str_welcome"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_size_large" />
 
@@ -21,17 +21,17 @@
         android:id="@+id/txtAttend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtWelcome"
+        android:layout_below="@id/txt_welcome"
         android:layout_marginLeft="@dimen/margin_40dp"
         android:layout_marginTop="@dimen/margin_zero"
         android:layout_marginRight="@dimen/margin_40dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_attend"
+        android:text="@string/str_attend"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font_size_middle" />
 
     <TextView
-        android:id="@+id/txtStatement"
+        android:id="@+id/txt_statement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtAttend"
@@ -41,21 +41,21 @@
         android:layout_marginEnd="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_30dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_statement"
+        android:text="@string/str_statement"
         android:textSize="@dimen/font_size_middle" />
 
     <TextView
-        android:id="@+id/txtRequest1"
+        android:id="@+id/txt_request1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtStatement"
+        android:layout_below="@id/txt_statement"
         android:layout_marginStart="@dimen/margin_30dp"
         android:layout_marginLeft="@dimen/margin_30dp"
         android:layout_marginTop="@dimen/margin_20dp"
         android:layout_marginEnd="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_30dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_request1"
+        android:text="@string/str_request1"
         android:textSize="@dimen/font_size_average" />
 
 
@@ -63,14 +63,14 @@
         android:id="@+id/txtRequest2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtRequest1"
+        android:layout_below="@id/txt_request1"
         android:layout_marginStart="@dimen/margin_30dp"
         android:layout_marginLeft="@dimen/margin_30dp"
         android:layout_marginTop="@dimen/margin_20dp"
         android:layout_marginEnd="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_30dp"
         android:layout_marginBottom="@dimen/margin_zero"
-        android:text="@string/txt_request2"
+        android:text="@string/str_request2"
         android:textSize="@dimen/font_size_average" />
 
     <TextView
@@ -84,11 +84,11 @@
         android:layout_marginEnd="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_30dp"
         android:layout_marginBottom="@dimen/margin_30dp"
-        android:text="@string/txt_request3"
+        android:text="@string/str_request3"
         android:textSize="@dimen/font_size_average" />
 
     <CheckBox
-        android:id="@+id/cbAccept"
+        android:id="@+id/cb_accept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtRequest3"
@@ -99,10 +99,10 @@
         android:textSize="@dimen/font_size_average" />
 
     <Button
-        android:id="@+id/btnGo"
+        android:id="@+id/btn_go"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cbAccept"
+        android:layout_below="@id/cb_accept"
         android:layout_marginLeft="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_20dp"
         android:layout_marginBottom="@dimen/margin_30dp"
