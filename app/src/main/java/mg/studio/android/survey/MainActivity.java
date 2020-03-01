@@ -1,10 +1,17 @@
 package mg.studio.android.survey;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,28 +21,27 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
+
     private CheckBox mCbAccept;
-    private String[] answers;
+    private String[] answers=null;
+    static AppCompatActivity mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
         mCbAccept = (CheckBox)findViewById(R.id.cb_accept);
-    }
-
-    private String getAnswer(int rgId){
-        RadioGroup rg = (RadioGroup) findViewById(rgId);
-        int checkedId = rg.getCheckedRadioButtonId();
-        if(checkedId == -1){
-            Toast.makeText(this,
-                    R.string.empty_answer,
-                    Toast.LENGTH_SHORT).show();
-            return "";
-        }
-        RadioButton rb = (RadioButton) findViewById(checkedId);
-        return "Your answer is "+rb.getText().toString();
+        mainActivity = this;
     }
 
     public void onClickNext(View view){
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_go:{
                 if(mCbAccept.isChecked()){
                     answers = new String[12];
+                    initialUserId();
                     setContentView(R.layout.question_one);
                 }else{
                     Toast.makeText(
@@ -178,10 +185,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void Finish(View view){
+    public void Finish(View view) throws IOException {
         Intent intent = new Intent(this, ReportActivity.class);
         intent.putExtra("answer",answers);
         startActivity(intent);
     }
 
+    private void initialUserId(){
+        SharedPreferences sp = getSharedPreferences(
+                "user_id",MODE_PRIVATE);
+        if(sp.getInt("id",-1)<0){
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putInt("id",0);
+            editor.commit();
+        }
+    }
+
+    private String getAnswer(int rgId){
+        RadioGroup rg = (RadioGroup) findViewById(rgId);
+        int checkedId = rg.getCheckedRadioButtonId();
+        if(checkedId == -1){
+            Toast.makeText(this,
+                    R.string.empty_answer,
+                    Toast.LENGTH_SHORT).show();
+            return "";
+        }
+        RadioButton rb = (RadioButton) findViewById(checkedId);
+        return "Your answer is "+rb.getText().toString();
+    }
 }

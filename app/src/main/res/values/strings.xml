@@ -82,4 +82,5 @@
     <string name="report_title">Here are your answers!</string>
     <string name="report_answer">your answer</string>
     <string name="empty_answer">Please choose a answer at least!</string>
+    <string name="btn_save">SAVE</string>
 </resources>
