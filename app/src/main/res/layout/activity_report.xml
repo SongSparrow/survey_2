@@ -10,340 +10,29 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/report_title"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/font_size_large"
+        android:layout_marginLeft="@dimen/margin_20dp"
+        android:layout_marginTop="@dimen/margin_40dp"
+        android:layout_marginRight="@dimen/margin_20dp"
+        android:layout_marginBottom="@dimen/margin_20dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
-        android:layout_marginTop="@dimen/margin_40dp"
-        android:layout_marginBottom="@dimen/margin_20dp"
-        android:layout_marginLeft="@dimen/margin_20dp"
-        android:layout_marginRight="@dimen/margin_20dp"/>
+        android:text="@string/report_title"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_size_large" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_marginLeft="@dimen/margin_20dp"
         android:layout_marginRight="@dimen/margin_20dp"
+        android:layout_weight="1"
         android:background="@color/colorPrimary">
 
         <LinearLayout
+            android:id="@+id/show_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txt_question1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question1"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/txt_question2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question2"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question3"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question4"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question5"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question6"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question7"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question1"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question9"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question10"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question11"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
-
-            <TextView
-                android:id="@+id/txt_question12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/str_question12"
-                android:textSize="@dimen/font_size_middle"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginRight="@dimen/margin_5dp"/>
-
-            <TextView
-                android:id="@+id/txt_answer12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_answer"
-                android:textSize="@dimen/font_size_average"
-                android:textColor="@android:color/white"
-                android:textStyle="italic"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"/>
 
         </LinearLayout>
     </ScrollView>
@@ -368,15 +57,15 @@
         android:id="@+id/btn_exit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_exit"
-        android:textSize="@dimen/font_size_middle"
-        android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"
         android:layout_marginLeft="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_5dp"
         android:layout_marginRight="@dimen/margin_20dp"
         android:layout_marginBottom="@dimen/margin_30dp"
-        android:onClick="onClickExit" />
+        android:background="@color/colorPrimary"
+        android:onClick="onClickExit"
+        android:text="@string/btn_exit"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font_size_middle" />
 
 
 </LinearLayout>

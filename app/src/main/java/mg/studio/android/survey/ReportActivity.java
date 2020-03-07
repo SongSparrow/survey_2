@@ -9,51 +9,84 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class ReportActivity extends AppCompatActivity {
-    private String[] answers;
-    private int mUserId=0;
-    private final int REQUEST_WRITE_EXTERNAL_STORAGE=100;
+    private int length;
+    private String text;
+    private final int REQUEST_WRITE_EXTERNAL_STORAGE = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
         Intent intent = getIntent();
-        answers = intent.getStringArrayExtra("answer");
+        text = intent.getStringExtra("data");
+        length = intent.getIntExtra("length", 0);
+        showAnswer();
+    }
+
+    private void showAnswer(){
         try {
-            ((TextView) findViewById(R.id.txt_answer1)).setText(answers[0]);
-            ((TextView) findViewById(R.id.txt_answer2)).setText(answers[1]);
-            ((TextView) findViewById(R.id.txt_answer3)).setText(answers[2]);
-            ((TextView) findViewById(R.id.txt_answer4)).setText(answers[3]);
-            ((TextView) findViewById(R.id.txt_answer5)).setText(answers[4]);
-            ((TextView) findViewById(R.id.txt_answer6)).setText(answers[5]);
-            ((TextView) findViewById(R.id.txt_answer7)).setText(answers[6]);
-            ((TextView) findViewById(R.id.txt_answer8)).setText(answers[7]);
-            ((TextView) findViewById(R.id.txt_answer9)).setText(answers[8]);
-            ((TextView) findViewById(R.id.txt_answer10)).setText(answers[9]);
-            ((TextView) findViewById(R.id.txt_answer11)).setText(answers[10]);
-            ((TextView) findViewById(R.id.txt_answer12)).setText(answers[11]);
-            findViewById(R.id.btn_save).setEnabled(true);
-        }catch (NullPointerException npe){
-            npe.printStackTrace();
+            JSONArray jQuestions = new JSONArray(text);
+            LinearLayout lLayout = findViewById(R.id.show_answer);
+            LinearLayout.LayoutParams lpq = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lpq.setMargins(0,0,0,5);
+
+            LinearLayout.LayoutParams lpa = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lpa.setMargins(40,0, 40 ,15);
+            for (int i = 0; i < length; i++) {
+                JSONObject jObject = (JSONObject)jQuestions.get(i);
+                TextView qText = new TextView(this);
+                String qStr = jObject.getString("question");
+                qText.setText(qStr);
+                qText.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.font_size_middle));
+                qText.setTextColor(getColor(R.color.fontColor));
+                lLayout.addView(qText, lpq);
+                TextView aText = new TextView(this);
+                String type = jObject.getString("type");
+                if(type.equals("single") || type.equals("fill")){
+                    String tmp = jObject.getJSONObject("answer").getString("1");
+                    aText.setText(tmp);
+                }else if(type.equals("multiple")){
+                    String tmp = jObject.getJSONArray("answer").toString();
+                    aText.setText(tmp);
+                }
+                aText.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.font_size_average));
+                aText.setTextColor(getColor(R.color.fontColor));
+                lLayout.addView(aText,lpa);
+            }
+        } catch (JSONException je) {
+            return;
         }
     }
 
-    public void onClickSave(View view){
-        String content = ReportActivity.makeJsonString(answers);
+    public void onClickSave(View view) {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -61,8 +94,8 @@ public class ReportActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_WRITE_EXTERNAL_STORAGE);
         } else {
-            saveToSd(false, content);
-            saveToSd(true, content);
+
+            saveToSd(text);
             view.setEnabled(false);
         }
     }
@@ -71,89 +104,66 @@ public class ReportActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        switch (requestCode){
-            case REQUEST_WRITE_EXTERNAL_STORAGE:{
-                if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                    String content = ReportActivity.makeJsonString(answers);
-                    saveToSd(false,content);
-                    saveToSd(true,content);
-                    findViewById(R.id.btn_save).setEnabled(false);
-                }
-                break;
-            }
-            default:
-                break;
+        if(requestCode == REQUEST_WRITE_EXTERNAL_STORAGE &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            saveToSd(text);
+            findViewById(R.id.btn_save).setEnabled(false);
         }
     }
 
-    public void saveToSd(boolean toSd, String content){
-        try{
-            String root = "";
-            if(toSd){
-                // true means Share Memory
-                root = getApplicationContext()
-                        .getExternalFilesDir(null).getAbsolutePath();
-            }else{
-                // false means interior of the app
-                root = this.getCacheDir().getPath();
-            }
-            File directory = new File(root);
-            // create dir
-            if(!directory.exists()){
-                directory.mkdirs();
-            }
+    public void saveToSd(String content) {
+        try {
             SharedPreferences sp = getSharedPreferences(
-                    "user_id",MODE_PRIVATE);
-            mUserId = sp.getInt("id",0)+1;
-            String strFileName = "answer"
-                    +mUserId+".json";
-            File answer = new File(root,strFileName);
+                    "user_id", MODE_PRIVATE);
+            int iUserId = sp.getInt("id", 0) + 1;
+            JSONObject jResult;
+            JSONObject jObject =   new JSONObject();
+            jObject.put("id",String.valueOf(iUserId));
+            jObject.put("len", String.valueOf(length));
+            jObject.put("questions", new JSONArray(content));
+
+            String root = this.getCacheDir().getPath();
+            File directory = new File(root);
+            File result = new File(root, "result.json");
             //create file
-            if(!answer.exists()){
-                answer.createNewFile();
+            if (!result.exists()) {
+                // write the json string into the file
+                result.createNewFile();
+                result.setWritable(true);
+                jResult = new JSONObject();
+                JSONArray jSurveys = new JSONArray();
+                jSurveys.put(jObject);
+                jResult.put("survey",jSurveys);
+            }else{
+                FileReader reader = new FileReader(result);
+                BufferedReader buffReader = new BufferedReader(reader);
+                String line;
+                StringBuilder text = new StringBuilder();
+                while ((line = buffReader.readLine()) != null) {
+                    text.append(line.trim());
+                }
+                reader.close();
+                jResult = new JSONObject(text.toString());
+                JSONArray jSurveys = jResult.getJSONArray("survey");
+                jSurveys.put(jObject);
+                jResult.put("survey",jSurveys);
             }
-            if(!answer.canWrite()){
-                answer.setWritable(true);
-            }
-            // write the json string into the file
-            FileOutputStream out = new FileOutputStream(answer);
-            out.write(content.getBytes());
-            out.flush();
+            FileOutputStream out = new FileOutputStream(result);
+            out.write(jResult.toString().getBytes());
             out.close();
             // update user id file
             SharedPreferences.Editor editor = sp.edit();
-            editor.putInt("id",mUserId);
+            editor.putInt("id", iUserId);
             editor.commit();
-        }catch (IOException ioe){
-            ioe.printStackTrace();
-        }
-    }
-
-    public static String makeJsonString(String[] content){
-        try{
-            // make json string
-            JSONObject object = new JSONObject("{}");
-            object.put("answer1",content[0]);
-            object.put("answer2",content[1]);
-            object.put("answer3",content[2]);
-            object.put("answer4",content[3]);
-            object.put("answer5",content[4]);
-            object.put("answer6",content[5]);
-            object.put("answer7",content[6]);
-            object.put("answer8",content[7]);
-            object.put("answer9",content[8]);
-            object.put("answer10",content[9]);
-            object.put("answer11",content[10]);
-            object.put("answer12",content[11]);
-            return object.toString();
+        } catch (IOException ioe) {
+           return;
         }catch (JSONException je){
-            je.printStackTrace();
+            return;
         }
-        return "{}";
     }
 
-    public void onClickExit(View view){
-       finish();
-       MainActivity.mainActivity.finish();
+    public void onClickExit(View view) {
+        finish();
+        MainActivity.mainActivity.finish();
     }
 }

@@ -52,7 +52,7 @@
         android:layout_marginRight="@dimen/margin_20dp"
         android:layout_marginBottom="@dimen/margin_30dp"
         android:background="@color/colorPrimary"
-        android:onClick="Finish"
+        android:onClick="onClickReport"
         android:text="@string/btn_finish"
         android:textSize="@dimen/font_size_middle" />
 

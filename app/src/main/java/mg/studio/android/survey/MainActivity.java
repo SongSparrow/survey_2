@@ -44,9 +44,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private CheckBox mCbAccept;
-    private String[] answers = null;
     private JSONArray questions;
-    private Map<String, String> survey;
+    private JSONObject[] answers;
     static AppCompatActivity mainActivity;
     private int qNum = 0;
     private int qSeq = 0;
@@ -61,8 +60,10 @@ public class MainActivity extends AppCompatActivity {
         questions = GetQuestions();
         if (questions == null) {
             qNum = 0;
+            answers = null;
         } else {
             qNum = questions.length();
+            answers = new JSONObject[qNum];
         }
         qSeq = 0;
     }
@@ -161,9 +162,21 @@ public class MainActivity extends AppCompatActivity {
         RadioGroup rGroup = findViewById(R.id.options);
         int checkedId = rGroup.getCheckedRadioButtonId();
         if (checkedId > 0) {
-            String answer = ((RadioButton) findViewById(checkedId)).getText().toString();
-            Log.i("onClickSingleNext", answer);
-            goNextPage();
+            try{
+                String answer = ((RadioButton) findViewById(checkedId)).getText().toString();
+                Log.i("onClickSingleNext", answer);
+                JSONObject jQuestion = new JSONObject();
+                jQuestion.put("type","single");
+                TextView question = findViewById(R.id.question);
+                jQuestion.put("question", question.getText().toString());
+                JSONObject jOption = new JSONObject();
+                jOption.put("1",answer);
+                jQuestion.put("answer", jOption);
+                answers[qSeq-1] = jQuestion;
+                goNextPage();
+            }catch (JSONException je){
+                return;
+            }
         }else{
             Toast.makeText(this, R.string.empty_answer,
                     Toast.LENGTH_SHORT).show();
@@ -174,13 +187,27 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout lLayout = findViewById(R.id.options);
         int n = lLayout.getChildCount();
         int x = 0;
-        for (int i = 0; i < n; i++) {
-            CheckBox cb = (CheckBox) lLayout.getChildAt(i);
-            if (cb.isChecked()) {
-                String answer = cb.getText().toString();
-                Log.i("onClickMultipleNext", answer);
-                x++;
+        try{
+            JSONObject jQuestion = new JSONObject();
+            jQuestion.put("type","multiple");
+            TextView view1 = findViewById(R.id.question);
+            jQuestion.put("question",view1.getText().toString());
+            JSONArray jAnswer = new JSONArray();
+            for (int i = 0; i < n; i++) {
+                CheckBox cb = (CheckBox) lLayout.getChildAt(i);
+                if (cb.isChecked()) {
+                    String answer = cb.getText().toString();
+                    JSONObject jOption = new JSONObject();
+                    jOption.put(String.valueOf(x+1),answer);
+                    jAnswer.put(jOption);
+                    Log.i("onClickMultipleNext", answer);
+                    x++;
+                }
             }
+            jQuestion.put("answer",jAnswer);
+            answers[qSeq-1] = jQuestion;
+        }catch (JSONException je){
+            return;
         }
         if(x>0){
             goNextPage();
@@ -194,8 +221,17 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = findViewById(R.id.answer_text);
         String answer = editText.getText().toString();
         if(answer.length() != 0){
-
-            goNextPage();
+            try{
+                JSONObject jQuestion = new JSONObject();
+                jQuestion.put("type","fill");
+                TextView view1 = findViewById(R.id.question);
+                jQuestion.put("question",view1.getText().toString());
+                JSONObject jText = new JSONObject();
+                jText.put("1",answer);
+                jQuestion.put("answer",jText);
+                answers[qSeq-1] = jQuestion;
+                goNextPage();
+            }catch (JSONException je){return;}
         }else{
             Toast.makeText(this, R.string.empty_answer,
                     Toast.LENGTH_SHORT).show();
@@ -222,4 +258,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickReport(View view) {
+        Intent intent = new Intent(this, ReportActivity.class);
+        JSONArray jsonArray = new JSONArray();
+        for (int i=0;i<qNum;i++)
+            jsonArray.put(answers[i]);
+        intent.putExtra("data", jsonArray.toString());
+        intent.putExtra("length",qNum);
+        startActivity(intent);
+    }
 }
