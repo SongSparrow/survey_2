@@ -59,7 +59,7 @@
     <string name="str_title10">Question10</string>
     <string name="str_question10">How old are you?</string>
     <string name="rb_under18">Under 18</string>
-    <string name="rb_19to25">19~25</string>
+        <string name="rb_19to25">19~25</string>
     <string name="rb_25to35">25~35</string>
     <string name="rb_beyond35">Beyond 35</string>
     <string name="str_title11">Question11</string>
@@ -83,4 +83,7 @@
     <string name="report_answer">your answer</string>
     <string name="empty_answer">Please choose a answer at least!</string>
     <string name="btn_save">SAVE</string>
+    <string name="single">Single Select</string>
+    <string name="multiple">Multiple Select</string>
+    <string name="fill">Fill the Blank</string>
 </resources>

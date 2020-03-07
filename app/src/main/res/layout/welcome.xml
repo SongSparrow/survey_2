@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <!--  Start : Your code should be within this block -->
 
     <TextView
@@ -21,7 +21,6 @@
         android:id="@+id/txtAttend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_welcome"
         android:layout_marginLeft="@dimen/margin_40dp"
         android:layout_marginTop="@dimen/margin_zero"
         android:layout_marginRight="@dimen/margin_40dp"
@@ -34,7 +33,6 @@
         android:id="@+id/txt_statement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtAttend"
         android:layout_marginStart="@dimen/margin_30dp"
         android:layout_marginLeft="@dimen/margin_30dp"
         android:layout_marginTop="@dimen/margin_30dp"
@@ -48,7 +46,6 @@
         android:id="@+id/txt_request1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_statement"
         android:layout_marginStart="@dimen/margin_30dp"
         android:layout_marginLeft="@dimen/margin_30dp"
         android:layout_marginTop="@dimen/margin_20dp"
@@ -58,12 +55,10 @@
         android:text="@string/str_request1"
         android:textSize="@dimen/font_size_average" />
 
-
     <TextView
         android:id="@+id/txtRequest2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_request1"
         android:layout_marginStart="@dimen/margin_30dp"
         android:layout_marginLeft="@dimen/margin_30dp"
         android:layout_marginTop="@dimen/margin_20dp"
@@ -77,7 +72,6 @@
         android:id="@+id/txtRequest3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtRequest2"
         android:layout_marginStart="@dimen/margin_30dp"
         android:layout_marginLeft="@dimen/margin_30dp"
         android:layout_marginTop="@dimen/margin_20dp"
@@ -87,13 +81,16 @@
         android:text="@string/str_request3"
         android:textSize="@dimen/font_size_average" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
     <CheckBox
         android:id="@+id/cb_accept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtRequest3"
-        android:layout_centerInParent="true"
-        android:layout_centerVertical="false"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_40dp"
         android:text="@string/cb_accept"
         android:textSize="@dimen/font_size_average" />
@@ -102,16 +99,14 @@
         android:id="@+id/btn_go"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cb_accept"
         android:layout_marginLeft="@dimen/margin_20dp"
         android:layout_marginTop="@dimen/margin_20dp"
         android:layout_marginBottom="@dimen/margin_30dp"
         android:layout_marginRight="@dimen/margin_20dp"
         android:background="@color/colorPrimary"
-        android:onClick="onClickNext"
+        android:onClick="onClickGo"
         android:text="@string/btn_go"
         android:textSize="@dimen/font_size_middle" />
 
-
     <!-- END    : Your code should be within this block -->
-</RelativeLayout>
+</LinearLayout>
