@@ -26,6 +26,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,8 +48,17 @@ public class MainActivity extends AppCompatActivity {
     private JSONArray questions;
     private JSONObject[] answers;
     static AppCompatActivity mainActivity;
-    private int qNum = 0;
-    private int qSeq = 0;
+    private int qNum = 0; // number of questions
+    private int qSeq = 0; // sequence
+
+/*    this is the test string but to prove the flexibility of the app,
+      I replace the test string with previous questions!!!!!!!!!!!!!!!!!!!!
+     if you want to know the  result of test string, please
+     replace  JSONObject json = new JSONObject(text.toString());
+     with JSONObject json = new JSONObject(test);
+     in GetQuestions function*/
+
+    //    private String test = " {\"survey\":{\"id\":\"12344134\",\"len\":\"2\",\"questions\":[{\"type\":\"single\",\"question\":\"How well do the professors teach at this university?\",\"options\":[{\"1\":\"Extremely well\"},{\"2\":\"Very well\"}]},{\"type\":\"single\",\"question\":\"How effective is the teaching outside yur major at the univesrity?\",\"options\":[{\"1\":\"Extremetly effective\"},{\"2\":\"Very effective\"},{\"3\":\"Somewhat effective\"},{\"4\":\"Not so effective\"},{\"5\":\"Not at all effective\"}]}]}}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +104,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setSingleView(JSONObject ques,
+    // if the type is single, the app will load a layout
+    // to display the single choice question
+    public void setSingleLayout(JSONObject ques,
                               int title_id) throws JSONException {
         if (ques == null) return;
         setContentView(R.layout.question_single);
         ((TextView) findViewById(R.id.title)).setText(title_id);
         ((TextView) findViewById(R.id.question)).setText(ques.getString("question"));
+        // get options
         JSONArray jArray = ques.getJSONArray("options");
         int size = jArray.length();
         String[] optionText = new String[size];
@@ -107,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
                 RadioGroup.LayoutParams.MATCH_PARENT,
                 RadioGroup.LayoutParams.WRAP_CONTENT);
+        // add the options into the ViewGroup
         for (int i = 0; i < size; i++) {
             optionText[i] = ((JSONObject) jArray.get(i)).getString(String.valueOf(i + 1));
             RadioButton option = new RadioButton(this);
@@ -118,12 +132,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setMultipleView(JSONObject ques,
+    // if the type is multiple, the app will load a layout
+    // to display the multiple choice question
+    public void setMultipleLayout(JSONObject ques,
                                 int title_id) throws JSONException {
         if (ques == null) return;
         setContentView(R.layout.question_multiple);
         ((TextView) findViewById(R.id.title)).setText(title_id);
         ((TextView) findViewById(R.id.question)).setText(ques.getString("question"));
+        // get the options
         JSONArray jArray = ques.getJSONArray("options");
         int size = jArray.length();
         String[] optionText = new String[size];
@@ -131,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
+        // add the options to the ViewGroup
         for (int i = 0; i < size; i++) {
             optionText[i] = ((JSONObject) jArray.get(i)).getString(String.valueOf(i + 1));
             CheckBox cb = new CheckBox(this);
@@ -142,13 +160,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setFillView(JSONObject ques,
-                            int title_id) throws JSONException {
+    // if the type is fill, the app will load a layout
+    // to display the fill-blank-question
+    public void setFillLayout(JSONObject ques,
+                              int title_id) throws JSONException {
+        if(ques == null) return;
         setContentView(R.layout.question_fill);
         ((TextView) findViewById(R.id.title)).setText(title_id);
         ((TextView) findViewById(R.id.question)).setText(ques.getString("question"));
     }
 
+    // the app will check whether the user agrees to
+    // our requirements or not, then load the question layout
     public void onClickGo(View view) {
         if (mCbAccept.isChecked()) {
             goNextPage();
@@ -158,8 +181,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // the app will save the user's answer after clicking
+    // the button on the single choice question layout
     public void onClickSingleNext(View view) {
         RadioGroup rGroup = findViewById(R.id.options);
+        // get the checked radiobutton
         int checkedId = rGroup.getCheckedRadioButtonId();
         if (checkedId > 0) {
             try{
@@ -173,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 jOption.put("1",answer);
                 jQuestion.put("answer", jOption);
                 answers[qSeq-1] = jQuestion;
-                goNextPage();
+                goNextPage(); // load next question
             }catch (JSONException je){
                 return;
             }
@@ -183,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // the app will save the user's answer after clicking
+    // the button on the multiple choice question layout
     public void onClickMultipleNext(View view) {
         LinearLayout lLayout = findViewById(R.id.options);
         int n = lLayout.getChildCount();
@@ -193,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
             TextView view1 = findViewById(R.id.question);
             jQuestion.put("question",view1.getText().toString());
             JSONArray jAnswer = new JSONArray();
+            // check every checkbox
             for (int i = 0; i < n; i++) {
                 CheckBox cb = (CheckBox) lLayout.getChildAt(i);
                 if (cb.isChecked()) {
@@ -200,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jOption = new JSONObject();
                     jOption.put(String.valueOf(x+1),answer);
                     jAnswer.put(jOption);
-                    Log.i("onClickMultipleNext", answer);
+//                    Log.i("onClickMultipleNext", answer);
                     x++;
                 }
             }
@@ -210,13 +239,16 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         if(x>0){
-            goNextPage();
+            goNextPage(); // load next question
         }else{
+            // if no one option was selected!
             Toast.makeText(this, R.string.empty_answer,
                     Toast.LENGTH_SHORT).show();
         }
     }
 
+    // the app will save the user's answer after clicking
+    // the button on the fill-blank-question layout
     public void onClickFillNext(View view) {
         EditText editText = findViewById(R.id.answer_text);
         String answer = editText.getText().toString();
@@ -238,17 +270,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // check the type of next question and then load it
     private void goNextPage() {
         try {
             if (qSeq < qNum) {
                 JSONObject question = ((JSONObject) questions.get(qSeq++));
                 String type = question.getString("type");
                 if (type.equals("single")) {
-                    setSingleView(question, R.string.single);
+                    setSingleLayout(question, R.string.single);
                 } else if (type.equals("multiple")) {
-                    setMultipleView(question, R.string.multiple);
+                    setMultipleLayout(question, R.string.multiple);
                 } else if (type.equals("fill")) {
-                    setFillView(question, R.string.fill);
+                    setFillLayout(question, R.string.fill);
                 }
             } else {
                 setContentView(R.layout.finish_survey);
@@ -258,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // start report activity
     public void onClickReport(View view) {
         Intent intent = new Intent(this, ReportActivity.class);
         JSONArray jsonArray = new JSONArray();

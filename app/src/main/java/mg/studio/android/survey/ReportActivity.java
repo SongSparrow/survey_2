@@ -40,24 +40,29 @@ public class ReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
         Intent intent = getIntent();
+        // get the answer string from MainActivity
         text = intent.getStringExtra("data");
         length = intent.getIntExtra("length", 0);
+        // display them on the show answer TextView
         showAnswer();
     }
 
+    // display the answer on the show answer TextView
     private void showAnswer(){
         try {
+            // question ViewGroup
             JSONArray jQuestions = new JSONArray(text);
             LinearLayout lLayout = findViewById(R.id.show_answer);
             LinearLayout.LayoutParams lpq = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             lpq.setMargins(0,0,0,5);
-
+            // answer ViewGroup
             LinearLayout.LayoutParams lpa = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             lpa.setMargins(40,0, 40 ,15);
+            // add questions and answers
             for (int i = 0; i < length; i++) {
                 JSONObject jObject = (JSONObject)jQuestions.get(i);
                 TextView qText = new TextView(this);
@@ -67,6 +72,7 @@ public class ReportActivity extends AppCompatActivity {
                         getResources().getDimension(R.dimen.font_size_middle));
                 qText.setTextColor(getColor(R.color.fontColor));
                 lLayout.addView(qText, lpq);
+                // ------------------------------------------------------------
                 TextView aText = new TextView(this);
                 String type = jObject.getString("type");
                 if(type.equals("single") || type.equals("fill")){
@@ -86,6 +92,7 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
+    // check permission and save the answer to json
     public void onClickSave(View view) {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -94,8 +101,7 @@ public class ReportActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_WRITE_EXTERNAL_STORAGE);
         } else {
-
-            saveToSd(text);
+            saveToJSON(text);
             view.setEnabled(false);
         }
     }
@@ -106,12 +112,13 @@ public class ReportActivity extends AppCompatActivity {
                                            @NonNull int[] grantResults) {
         if(requestCode == REQUEST_WRITE_EXTERNAL_STORAGE &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            saveToSd(text);
+            saveToJSON(text);
             findViewById(R.id.btn_save).setEnabled(false);
         }
     }
 
-    public void saveToSd(String content) {
+    // save content to json file
+    public void saveToJSON(String content) {
         try {
             SharedPreferences sp = getSharedPreferences(
                     "user_id", MODE_PRIVATE);
@@ -135,6 +142,7 @@ public class ReportActivity extends AppCompatActivity {
                 jSurveys.put(jObject);
                 jResult.put("survey",jSurveys);
             }else{
+                // append record!
                 FileReader reader = new FileReader(result);
                 BufferedReader buffReader = new BufferedReader(reader);
                 String line;
@@ -162,6 +170,7 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
+    // exit the app
     public void onClickExit(View view) {
         finish();
         MainActivity.mainActivity.finish();
