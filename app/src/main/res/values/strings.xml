@@ -59,7 +59,7 @@
     <string name="str_title10">Question10</string>
     <string name="str_question10">How old are you?</string>
     <string name="rb_under18">Under 18</string>
-        <string name="rb_19to25">19~25</string>
+    <string name="rb_19to25">19~25</string>
     <string name="rb_25to35">25~35</string>
     <string name="rb_beyond35">Beyond 35</string>
     <string name="str_title11">Question11</string>
@@ -86,4 +86,10 @@
     <string name="single">Single Select</string>
     <string name="multiple">Multiple Select</string>
     <string name="fill">Fill the Blank</string>
+    <string name="set_pswd">Please set a password to unlock!</string>
+    <string name="pswd">your password</string>
+    <string name="okay">Okay</string>
+    <string name="cpswd">confirm your password</string>
+    <string name="input_paswd">Please input your password</string>
+    <string name="scan">scan</string>
 </resources>
