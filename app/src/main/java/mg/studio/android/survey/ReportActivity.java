@@ -189,10 +189,13 @@ public class ReportActivity extends AppCompatActivity {
         if (ok > 0) {
             // Answer table : userId, questionType, question, answer
             String answerTableName = "answer" + surveyId;
-            String createTable = "create table " + answerTableName +
+
+            String createTable = "create table if not exists " + answerTableName +
                     " (userId int, questionType nvarchar(20), " +
                     "question nvarchar(100), answer nvarchar(200));";
             db.execSQL(createTable);
+
+
             try {
                 JSONArray jArray = new JSONArray(text);
                 for (int i = 0; i < length; i++) {
