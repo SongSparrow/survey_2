@@ -1,7 +1,9 @@
 package mg.studio.android.survey;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -9,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -16,15 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,36 +33,57 @@ public class MainActivity extends AppCompatActivity {
     private JSONArray questions;
     private JSONObject[] answers;
     static AppCompatActivity mainActivity;
+    private String text;
     private int qNum = 0; // number of questions
     private int qSeq = 0; // sequence
     private String surveyid;
     private boolean exit;
-/*    this is the test string but to prove the flexibility of the app,
-      I replace the test string with previous questions!!!!!!!!!!!!!!!!!!!!
-     if you want to know the  result of test string, please
-     replace  JSONObject json = new JSONObject(text.toString());
-     with JSONObject json = new JSONObject(test);
-     in GetQuestions function*/
-
-    //    private String test = " {\"survey\":{\"id\":\"12344134\",\"len\":\"2\",\"questions\":[{\"type\":\"single\",\"question\":\"How well do the professors teach at this university?\",\"options\":[{\"1\":\"Extremely well\"},{\"2\":\"Very well\"}]},{\"type\":\"single\",\"question\":\"How effective is the teaching outside yur major at the univesrity?\",\"options\":[{\"1\":\"Extremetly effective\"},{\"2\":\"Very effective\"},{\"3\":\"Somewhat effective\"},{\"4\":\"Not so effective\"},{\"5\":\"Not at all effective\"}]}]}}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
+        ImageView imgScan;
+        imgScan = findViewById(R.id.img_scan);
+        imgScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanQRCode();
+            }
+        });
         mCbAccept = (CheckBox) findViewById(R.id.cb_accept);
         mainActivity = this;
         exit = false;
-        // initial question list
-        questions = GetQuestions();
-        if (questions == null) {
-            qNum = 0;
-            answers = null;
-        } else {
-            qNum = questions.length();
-            answers = new JSONObject[qNum];
+    }
+
+    private void getCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.CAMERA
+            }, 110);
         }
-        qSeq = 0;
+    }
+
+    private void scanQRCode() {
+        getCameraPermission();
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.initiateScan();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult != null) {
+            text = scanResult.getContents();
+            Log.i("onActivityResult", text);
+            Toast.makeText(getApplicationContext(), "scan success!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "scan failed!", Toast.LENGTH_LONG).show();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -76,25 +98,15 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     private JSONArray GetQuestions() {
         try {
-            // read sample.json
-            InputStreamReader inputReader = new InputStreamReader(
-                    getAssets().open("sample.json"));
-            BufferedReader buffReader = new BufferedReader(inputReader);
-            String line = "";
-            StringBuilder text = new StringBuilder();
-            while ((line = buffReader.readLine()) != null) {
-                text.append(line.trim());
-            }
-            inputReader.close();
-            // analyse text
-            JSONObject json = new JSONObject(text.toString());
+            if (text == null || text.length() == 0) return null;
+            JSONObject json = new JSONObject(text);
             JSONObject survey = json.getJSONObject("survey");
-           // save survey id
+            // save survey id
             surveyid = survey.getString("id");
             // return question json object list
             return survey.getJSONArray("questions");
-        } catch (IOException ioe) {
-            return null;
+//        } catch (IOException ioe) {
+//            return null;
         } catch (JSONException je) {
             return null;
         }
@@ -169,6 +181,21 @@ public class MainActivity extends AppCompatActivity {
     // the app will check whether the user agrees to
     // our requirements or not, then load the question layout
     public void onClickGo(View view) {
+        // initial question list
+        if (text == null || text.length() == 0){
+            Toast.makeText(this,R.string.without_data,
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        questions = GetQuestions();
+        if (questions == null) {
+            qNum = 0;
+            answers = null;
+        } else {
+            qNum = questions.length();
+            answers = new JSONObject[qNum];
+        }
+        qSeq = 0;
         if (mCbAccept.isChecked()) {
             goNextPage();
         } else {
@@ -188,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                 String answer = ((RadioButton) findViewById(checkedId)).getText().toString();
                 Log.i("onClickSingleNext", answer);
                 JSONObject jQuestion = new JSONObject();
-                jQuestion.put("type", "single");
+                jQuestion.put("type", "radio");
                 TextView question = findViewById(R.id.question);
                 jQuestion.put("question", question.getText().toString());
                 JSONObject jOption = new JSONObject();
@@ -213,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
         int x = 0;
         try {
             JSONObject jQuestion = new JSONObject();
-            jQuestion.put("type", "multiple");
+            jQuestion.put("type", "checkbox");
             TextView view1 = findViewById(R.id.question);
             jQuestion.put("question", view1.getText().toString());
             JSONArray jAnswer = new JSONArray();
@@ -251,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         if (answer.length() != 0) {
             try {
                 JSONObject jQuestion = new JSONObject();
-                jQuestion.put("type", "fill");
+                jQuestion.put("type", "text");
                 TextView view1 = findViewById(R.id.question);
                 jQuestion.put("question", view1.getText().toString());
                 JSONObject jText = new JSONObject();
@@ -274,11 +301,11 @@ public class MainActivity extends AppCompatActivity {
             if (qSeq < qNum) {
                 JSONObject question = ((JSONObject) questions.get(qSeq++));
                 String type = question.getString("type");
-                if (type.equals("single")) {
+                if (type.equals("radio")) {
                     setSingleLayout(question, R.string.single);
-                } else if (type.equals("multiple")) {
+                } else if (type.equals("checkbox")) {
                     setMultipleLayout(question, R.string.multiple);
-                } else if (type.equals("fill")) {
+                } else if (type.equals("text")) {
                     setFillLayout(question, R.string.fill);
                 }
             } else {

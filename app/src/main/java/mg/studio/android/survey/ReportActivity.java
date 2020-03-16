@@ -138,10 +138,10 @@ public class ReportActivity extends AppCompatActivity {
                 // ------------------------------------------------------------
                 TextView aText = new TextView(this);
                 String type = jObject.getString("type");
-                if (type.equals("single") || type.equals("fill")) {
+                if (type.equals("radio") || type.equals("text")) {
                     String tmp = jObject.getJSONObject("answer").getString("1");
                     aText.setText(tmp);
-                } else if (type.equals("multiple")) {
+                } else if (type.equals("checkbox")) {
                     String tmp = jObject.getJSONArray("answer").toString();
                     aText.setText(tmp);
                 }
@@ -204,7 +204,7 @@ public class ReportActivity extends AppCompatActivity {
                     String strQuestion = jObject.getString("question");
                     values.put("question", strQuestion);
                     String strAnswer;
-                    if (strType.equals("multiple")) {
+                    if (strType.equals("checkbox")) {
                         strAnswer = jObject.getJSONArray("answer").toString();
                     } else {
                         strAnswer = jObject.getString("answer");
