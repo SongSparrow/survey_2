@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private String text;
     private int qNum = 0; // number of questions
     private int qSeq = 0; // sequence
-    private String surveyid;
+    private String surveyId;
     private boolean exit;
 
     @Override
@@ -47,15 +47,13 @@ public class MainActivity extends AppCompatActivity {
         imgScan = findViewById(R.id.img_scan);
         imgScan.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                scanQRCode();
-            }
-        });
+            public void onClick(View v) { scanQRCode(); }});
         mCbAccept = (CheckBox) findViewById(R.id.cb_accept);
         mainActivity = this;
         exit = false;
     }
 
+    // get camera permission
     private void getCameraPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) !=
@@ -66,14 +64,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // scan qr code
     private void scanQRCode() {
         getCameraPermission();
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();
     }
 
+    // get text from qr code
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null) {
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    // disable back button
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME)
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    // initial question list
+    // analyse the question text
     @Nullable
     private JSONArray GetQuestions() {
         try {
@@ -101,11 +103,9 @@ public class MainActivity extends AppCompatActivity {
             JSONObject json = new JSONObject(text);
             JSONObject survey = json.getJSONObject("survey");
             // save survey id
-            surveyid = survey.getString("id");
+            surveyId = survey.getString("id");
             // return question json object list
             return survey.getJSONArray("questions");
-//        } catch (IOException ioe) {
-//            return null;
         } catch (JSONException je) {
             return null;
         }
@@ -181,8 +181,8 @@ public class MainActivity extends AppCompatActivity {
     // our requirements or not, then load the question layout
     public void onClickGo(View view) {
         // initial question list
-        if (text == null || text.length() == 0){
-            Toast.makeText(this,R.string.without_data,
+        if (text == null || text.length() == 0) {
+            Toast.makeText(this, R.string.without_data,
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
             jsonArray.put(answers[i]);
         intent.putExtra("data", jsonArray.toString());
         intent.putExtra("length", qNum);
-        intent.putExtra("surveyId", surveyid);
+        intent.putExtra("surveyId", surveyId);
         startActivity(intent);
     }
 }
