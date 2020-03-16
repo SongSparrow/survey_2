@@ -101,4 +101,6 @@
     <string name="save_ok">save successfully</string>
     <string name="save_fail">save failed!</string>
     <string name="without_data">Please scan QR Code to load questions</string>
+    <string name="get_data">scan success!</string>
+    <string name="get_no_data">scan failed!</string>
 </resources>

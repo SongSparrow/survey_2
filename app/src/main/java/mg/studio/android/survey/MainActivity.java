@@ -78,10 +78,9 @@ public class MainActivity extends AppCompatActivity {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null) {
             text = scanResult.getContents();
-            Log.i("onActivityResult", text);
-            Toast.makeText(getApplicationContext(), "scan success!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.get_data, Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getApplicationContext(), "scan failed!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.get_no_data, Toast.LENGTH_LONG).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

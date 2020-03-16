@@ -331,7 +331,7 @@ public class IntentIntegrator {
 
     /**
      * <p>Call this from your {@link Activity}'s
-     * {@link Activity#onActivityResult(int, int, Intent)} method.</p>
+     *  method.</p>
      *
      * @param requestCode request code from {@code onActivityResult()}
      * @param resultCode result code from {@code onActivityResult()}
