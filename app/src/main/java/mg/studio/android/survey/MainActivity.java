@@ -1,11 +1,11 @@
 package mg.studio.android.survey;
 
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,10 +14,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     static AppCompatActivity mainActivity;
     private int qNum = 0; // number of questions
     private int qSeq = 0; // sequence
-
+    private String surveyid;
+    private boolean exit;
 /*    this is the test string but to prove the flexibility of the app,
       I replace the test string with previous questions!!!!!!!!!!!!!!!!!!!!
      if you want to know the  result of test string, please
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.welcome);
         mCbAccept = (CheckBox) findViewById(R.id.cb_accept);
         mainActivity = this;
+        exit = false;
         // initial question list
         questions = GetQuestions();
         if (questions == null) {
@@ -56,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
             answers = new JSONObject[qNum];
         }
         qSeq = 0;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME)
+            if (!exit)
+                return false;
+        return super.onKeyDown(keyCode, event);
     }
 
     // initial question list
@@ -75,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
             // analyse text
             JSONObject json = new JSONObject(text.toString());
             JSONObject survey = json.getJSONObject("survey");
+           // save survey id
+            surveyid = survey.getString("id");
             // return question json object list
             return survey.getJSONArray("questions");
         } catch (IOException ioe) {
@@ -87,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     // if the type is single, the app will load a layout
     // to display the single choice question
     public void setSingleLayout(JSONObject ques,
-                              int title_id) throws JSONException {
+                                int title_id) throws JSONException {
         if (ques == null) return;
         setContentView(R.layout.question_single);
         ((TextView) findViewById(R.id.title)).setText(title_id);
@@ -107,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             option.setText(optionText[i]);
             option.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(R.dimen.font_size_average));
-            option.setPadding(0,5,0,5);
+            option.setPadding(0, 5, 0, 5);
             rGroup.addView(option, lp);
         }
     }
@@ -115,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     // if the type is multiple, the app will load a layout
     // to display the multiple choice question
     public void setMultipleLayout(JSONObject ques,
-                                int title_id) throws JSONException {
+                                  int title_id) throws JSONException {
         if (ques == null) return;
         setContentView(R.layout.question_multiple);
         ((TextView) findViewById(R.id.title)).setText(title_id);
@@ -135,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             cb.setText(optionText[i]);
             cb.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(R.dimen.font_size_average));
-            cb.setPadding(0,5,0,5);
+            cb.setPadding(0, 5, 0, 5);
             lLayout.addView(cb, lp);
         }
     }
@@ -144,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
     // to display the fill-blank-question
     public void setFillLayout(JSONObject ques,
                               int title_id) throws JSONException {
-        if(ques == null) return;
+        if (ques == null) return;
         setContentView(R.layout.question_fill);
         ((TextView) findViewById(R.id.title)).setText(title_id);
         ((TextView) findViewById(R.id.question)).setText(ques.getString("question"));
@@ -168,22 +184,22 @@ public class MainActivity extends AppCompatActivity {
         // get the checked radiobutton
         int checkedId = rGroup.getCheckedRadioButtonId();
         if (checkedId > 0) {
-            try{
+            try {
                 String answer = ((RadioButton) findViewById(checkedId)).getText().toString();
                 Log.i("onClickSingleNext", answer);
                 JSONObject jQuestion = new JSONObject();
-                jQuestion.put("type","single");
+                jQuestion.put("type", "single");
                 TextView question = findViewById(R.id.question);
                 jQuestion.put("question", question.getText().toString());
                 JSONObject jOption = new JSONObject();
-                jOption.put("1",answer);
+                jOption.put("1", answer);
                 jQuestion.put("answer", jOption);
-                answers[qSeq-1] = jQuestion;
+                answers[qSeq - 1] = jQuestion;
                 goNextPage(); // load next question
-            }catch (JSONException je){
+            } catch (JSONException je) {
                 return;
             }
-        }else{
+        } else {
             Toast.makeText(this, R.string.empty_answer,
                     Toast.LENGTH_SHORT).show();
         }
@@ -195,11 +211,11 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout lLayout = findViewById(R.id.options);
         int n = lLayout.getChildCount();
         int x = 0;
-        try{
+        try {
             JSONObject jQuestion = new JSONObject();
-            jQuestion.put("type","multiple");
+            jQuestion.put("type", "multiple");
             TextView view1 = findViewById(R.id.question);
-            jQuestion.put("question",view1.getText().toString());
+            jQuestion.put("question", view1.getText().toString());
             JSONArray jAnswer = new JSONArray();
             // check every checkbox
             for (int i = 0; i < n; i++) {
@@ -207,20 +223,20 @@ public class MainActivity extends AppCompatActivity {
                 if (cb.isChecked()) {
                     String answer = cb.getText().toString();
                     JSONObject jOption = new JSONObject();
-                    jOption.put(String.valueOf(x+1),answer);
+                    jOption.put(String.valueOf(x + 1), answer);
                     jAnswer.put(jOption);
 //                    Log.i("onClickMultipleNext", answer);
                     x++;
                 }
             }
-            jQuestion.put("answer",jAnswer);
-            answers[qSeq-1] = jQuestion;
-        }catch (JSONException je){
+            jQuestion.put("answer", jAnswer);
+            answers[qSeq - 1] = jQuestion;
+        } catch (JSONException je) {
             return;
         }
-        if(x>0){
+        if (x > 0) {
             goNextPage(); // load next question
-        }else{
+        } else {
             // if no one option was selected!
             Toast.makeText(this, R.string.empty_answer,
                     Toast.LENGTH_SHORT).show();
@@ -232,19 +248,21 @@ public class MainActivity extends AppCompatActivity {
     public void onClickFillNext(View view) {
         EditText editText = findViewById(R.id.answer_text);
         String answer = editText.getText().toString();
-        if(answer.length() != 0){
-            try{
+        if (answer.length() != 0) {
+            try {
                 JSONObject jQuestion = new JSONObject();
-                jQuestion.put("type","fill");
+                jQuestion.put("type", "fill");
                 TextView view1 = findViewById(R.id.question);
-                jQuestion.put("question",view1.getText().toString());
+                jQuestion.put("question", view1.getText().toString());
                 JSONObject jText = new JSONObject();
-                jText.put("1",answer);
-                jQuestion.put("answer",jText);
-                answers[qSeq-1] = jQuestion;
+                jText.put("1", answer);
+                jQuestion.put("answer", jText);
+                answers[qSeq - 1] = jQuestion;
                 goNextPage();
-            }catch (JSONException je){return;}
-        }else{
+            } catch (JSONException je) {
+                return;
+            }
+        } else {
             Toast.makeText(this, R.string.empty_answer,
                     Toast.LENGTH_SHORT).show();
         }
@@ -275,10 +293,11 @@ public class MainActivity extends AppCompatActivity {
     public void onClickReport(View view) {
         Intent intent = new Intent(this, ReportActivity.class);
         JSONArray jsonArray = new JSONArray();
-        for (int i=0;i<qNum;i++)
+        for (int i = 0; i < qNum; i++)
             jsonArray.put(answers[i]);
         intent.putExtra("data", jsonArray.toString());
-        intent.putExtra("length",qNum);
+        intent.putExtra("length", qNum);
+        intent.putExtra("surveyId", surveyid);
         startActivity(intent);
     }
 }
