@@ -1,6 +1,7 @@
 package mg.studio.android.survey;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,10 +10,13 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,20 +35,29 @@ import java.util.Calendar;
 import java.util.List;
 
 public class ReportActivity extends AppCompatActivity {
+    public static Activity reportActivity;
     private int length;
     private String text;
     private String surveyId;
     private String provider;
-    private final String[] permissions = {
+    public static boolean bStart;
+    private final int REQUEST_PERMISSION = 100;
+    private final String[] permissions_save = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE,
+
     };
+//    private final String[] permissions_exit = {
+//            Manifest.permission.SYSTEM_ALERT_WINDOW
+//    };
     private DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
+        reportActivity = this;
         Intent intent = getIntent();
         // get the answer string from MainActivity
         text = intent.getStringExtra("data");
@@ -54,20 +67,37 @@ public class ReportActivity extends AppCompatActivity {
         // display them on the show answer TextView
         showAnswer();
     }
-    private void getPermissions() {
+
+    // check permissions to get location and IMEI
+    private void getSavePermissions() {
         boolean flag = true;
-        for (String permission : permissions) {
+        for (String permission : permissions_save) {
             if (ContextCompat.checkSelfPermission(this, permission)
                     != PackageManager.PERMISSION_GRANTED) {
                 flag = false;
             }
         }
-        final int REQUEST_PERMISSION = 100;
         if (!flag) {
             ActivityCompat.requestPermissions(
-                    this, permissions, REQUEST_PERMISSION);
+                    this, permissions_save, REQUEST_PERMISSION);
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (!Settings.canDrawOverlays(this)) {
+                Toast.makeText(this, "授权失败", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "授权成功", Toast.LENGTH_SHORT).show();
+                if (!bStart){
+                    startService(new Intent(this, FloatingService.class));
+                }
+            }
+        }
+    }
+
     @Nullable
     private Location getCurrentLocation() {
         LocationManager lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -99,17 +129,23 @@ public class ReportActivity extends AppCompatActivity {
         }
         return location;
     }
+
     @Nullable
     private String getIMEI() {
-        TelephonyManager tManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        if (tManager == null) return null;
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.READ_PHONE_STATE) ==
-                PackageManager.PERMISSION_GRANTED) {
-            return tManager.getImei();
+        try {
+            TelephonyManager tManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            if (tManager == null) return null;
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_PHONE_STATE) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                return tManager.getImei();
+            }
+        }catch (SecurityException se){
+            return null;
         }
         return null;
     }
+
     // display the answer on the show answer TextView
     private void showAnswer() {
         try {
@@ -154,9 +190,10 @@ public class ReportActivity extends AppCompatActivity {
             return;
         }
     }
+
     // check permission and save the answer to json
     public void onClickSave(@NotNull View view) {
-        getPermissions();
+        getSavePermissions();
         saveToDatabase();
         view.setEnabled(false);
     }
@@ -236,8 +273,23 @@ public class ReportActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
+
     // exit the app
     public void onClickExit(View view) {
+        if(!Settings.canDrawOverlays(this)){
+            startActivityForResult(new Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:"+getPackageName())),0);
+        }else {
+            if (!bStart){startService(new Intent(this, FloatingService.class));}
+        }
+    }
+
+    public void onClickUnlock(View view) {
+        String password = ((EditText)findViewById(R.id.unlock_pswd)).getText().toString();
+        if(password.equals("123")){
+            stopService(new Intent(this, FloatingService.class));
+        }
         finish();
         MainActivity.mainActivity.finish();
     }

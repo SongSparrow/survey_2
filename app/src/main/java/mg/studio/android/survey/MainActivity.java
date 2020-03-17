@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mCbAccept = (CheckBox) findViewById(R.id.cb_accept);
         mainActivity = this;
         exit = false;
+        text = "  {\"survey\":{\"id\":\"12344134\",\"len\":\"2\",\"questions\":[{\"type\":\"radio\",\"question\":\"How well do the professors teach at this university?\",\"options\":[{\"1\":\"Extremely well\"},{\"2\":\"Very well\"}]},{\"type\":\"radio\",\"question\":\"How effective is the teaching outside yur major at the univesrity?\",\"options\":[{\"1\":\"Extremetly effective\"},{\"2\":\"Very effective\"},{\"3\":\"Somewhat effective\"},{\"4\":\"Not so effective\"},{\"5\":\"Not at all effective\"}]}]}}";
     }
 
     // get camera permission
