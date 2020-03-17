@@ -14,8 +14,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // survey id  / answer table name / time / latitude / longitude / IMEI
-        db.execSQL("create table AnswerManager(surveyId nvarchar(20), answerTime Date, locationLat double, locationLong double, IMEI nvarchar(50));");
+        // survey id  time / location / IMEI
+        db.execSQL("create table AnswerManager(surveyId varchar(20), answerTime text, location text, IMEI varchar(50));");
     }
 
     @Override

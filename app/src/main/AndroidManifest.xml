@@ -21,11 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".FloatingService"
+            android:name=".PswdService"
             android:enabled="true"
-            android:exported="true">
-
-        </service>
+            android:exported="true"></service>
+        <service
+            android:name=".LockService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <activity
             android:name=".ReportActivity"
@@ -33,7 +35,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

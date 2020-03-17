@@ -103,4 +103,6 @@
     <string name="without_data">Please scan QR Code to load questions</string>
     <string name="get_data">scan success!</string>
     <string name="get_no_data">scan failed!</string>
+    <string name="empty_cf_pswd">Please confirm your password</string>
+    <string name="cf_fail">Confirm failed!</string>
 </resources>

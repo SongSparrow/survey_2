@@ -3,11 +3,13 @@ package mg.studio.android.survey;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private int qNum = 0; // number of questions
     private int qSeq = 0; // sequence
     private String surveyId;
-    private boolean exit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +48,12 @@ public class MainActivity extends AppCompatActivity {
         imgScan = findViewById(R.id.img_scan);
         imgScan.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { scanQRCode(); }});
+            public void onClick(View v) {
+                scanQRCode();
+            }
+        });
         mCbAccept = (CheckBox) findViewById(R.id.cb_accept);
         mainActivity = this;
-        exit = false;
-        text = "  {\"survey\":{\"id\":\"12344134\",\"len\":\"2\",\"questions\":[{\"type\":\"radio\",\"question\":\"How well do the professors teach at this university?\",\"options\":[{\"1\":\"Extremely well\"},{\"2\":\"Very well\"}]},{\"type\":\"radio\",\"question\":\"How effective is the teaching outside yur major at the univesrity?\",\"options\":[{\"1\":\"Extremetly effective\"},{\"2\":\"Very effective\"},{\"3\":\"Somewhat effective\"},{\"4\":\"Not so effective\"},{\"5\":\"Not at all effective\"}]}]}}";
     }
 
     // get camera permission
@@ -76,24 +78,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     @androidx.annotation.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (scanResult != null) {
-            text = scanResult.getContents();
-            Toast.makeText(getApplicationContext(), R.string.get_data, Toast.LENGTH_LONG).show();
+        if (requestCode == 0) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (!Settings.canDrawOverlays(this)) {
+                Toast.makeText(this, "授权失败", Toast.LENGTH_SHORT).show();
+            } else {
+                startService(new Intent(this, PswdService.class));
+                Toast.makeText(this, "授权成功", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(getApplicationContext(), R.string.get_no_data, Toast.LENGTH_LONG).show();
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (scanResult != null) {
+                text = scanResult.getContents();
+                Toast.makeText(getApplicationContext(), R.string.get_data, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.get_no_data, Toast.LENGTH_LONG).show();
+            }
+            super.onActivityResult(requestCode, resultCode, data);
         }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    // disable back button
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME)
-            if (!exit)
-                return false;
-        return super.onKeyDown(keyCode, event);
     }
 
     // analyse the question text
@@ -181,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
     // the app will check whether the user agrees to
     // our requirements or not, then load the question layout
     public void onClickGo(View view) {
+        checkInitialPswd();
         // initial question list
         if (text == null || text.length() == 0) {
             Toast.makeText(this, R.string.without_data,
@@ -326,5 +329,19 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("length", qNum);
         intent.putExtra("surveyId", surveyId);
         startActivity(intent);
+    }
+
+    // set a password to unlock
+    private void checkInitialPswd() {
+        SharedPreferences sp = getSharedPreferences("pswd", MODE_PRIVATE);
+        if (sp.getString("spswd", "").length() != 0) return;
+
+        if (!Settings.canDrawOverlays(this)) {
+            startActivityForResult(new Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName())), 0);
+        } else {
+            startService(new Intent(this, PswdService.class));
+        }
     }
 }

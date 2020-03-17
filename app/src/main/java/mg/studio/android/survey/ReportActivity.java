@@ -16,7 +16,6 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,15 +41,13 @@ public class ReportActivity extends AppCompatActivity {
     private String provider;
     public static boolean bStart;
     private final int REQUEST_PERMISSION = 100;
+    // permissions to get location and imei
     private final String[] permissions_save = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.READ_PHONE_STATE,
 
     };
-//    private final String[] permissions_exit = {
-//            Manifest.permission.SYSTEM_ALERT_WINDOW
-//    };
     private DBHelper dbHelper;
 
     @Override
@@ -63,7 +60,6 @@ public class ReportActivity extends AppCompatActivity {
         text = intent.getStringExtra("data");
         length = intent.getIntExtra("length", 0);
         surveyId = intent.getStringExtra("surveyId");
-        dbHelper = null;
         // display them on the show answer TextView
         showAnswer();
     }
@@ -83,6 +79,7 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
+    // start lock service
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -92,14 +89,15 @@ public class ReportActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "授权成功", Toast.LENGTH_SHORT).show();
                 if (!bStart){
-                    startService(new Intent(this, FloatingService.class));
+                    startService(new Intent(this, LockService.class));
                 }
             }
         }
     }
 
+    //get current location string
     @Nullable
-    private Location getCurrentLocation() {
+    private String getCurrentLocation() {
         LocationManager lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         List<String> list;
         if (lManager != null) {
@@ -127,9 +125,20 @@ public class ReportActivity extends AppCompatActivity {
                         == PackageManager.PERMISSION_GRANTED) {
             location = lManager.getLastKnownLocation(provider);
         }
-        return location;
+
+        if (location != null){
+            StringBuilder strLocation=new StringBuilder();
+            strLocation.append("Location(latitude:");
+            strLocation.append(location.getLatitude());
+            strLocation.append(", longitude:");
+            strLocation.append(location.getLongitude());
+            strLocation.append(")");
+            return strLocation.toString();
+        }
+        return null;
     }
 
+    // get IMEI string
     @Nullable
     private String getIMEI() {
         try {
@@ -194,44 +203,44 @@ public class ReportActivity extends AppCompatActivity {
     // check permission and save the answer to json
     public void onClickSave(@NotNull View view) {
         getSavePermissions();
+        for (String per:permissions_save){
+            if(ContextCompat.checkSelfPermission(this,per)
+                    !=PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this,
+                        per+"is needed!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
         saveToDatabase();
         view.setEnabled(false);
     }
 
-    public void saveToDatabase() {
+    // save time, current location, IMEI and answers to database
+    private void saveToDatabase() {
         String time = Calendar.getInstance().getTime().toString();
-        Location location = getCurrentLocation();
+        String location = getCurrentLocation();
         String IMEI = getIMEI();
-        double latitude = 0;
-        double longitude = 0;
-        if (location != null) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
         SharedPreferences sp = getSharedPreferences(
                 "user_id", MODE_PRIVATE);
         int userId = sp.getInt("id", 0) + 1;
         // AnswerManager Table
-        // survey id  / answerTime / locationLat / locationLong / IMEI
+        // survey id  / answerTime / location / IMEI
         dbHelper = new DBHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         values.put("surveyId", surveyId);
         values.put("answerTime", time);
-        values.put("locationLat", latitude);
-        values.put("locationLong", longitude);
+        values.put("location", location);
         values.put("IMEI", IMEI);
         long ok = db.insert("AnswerManager", null, values);
         if (ok > 0) {
             // Answer table : userId, questionType, question, answer
             String answerTableName = "answer" + surveyId;
-
             String createTable = "create table if not exists " + answerTableName +
                     " (userId int, questionType nvarchar(20), " +
                     "question nvarchar(100), answer nvarchar(200));";
             db.execSQL(createTable);
-
 
             try {
                 JSONArray jArray = new JSONArray(text);
@@ -281,16 +290,7 @@ public class ReportActivity extends AppCompatActivity {
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:"+getPackageName())),0);
         }else {
-            if (!bStart){startService(new Intent(this, FloatingService.class));}
+            if (!bStart){startService(new Intent(this, LockService.class));}
         }
-    }
-
-    public void onClickUnlock(View view) {
-        String password = ((EditText)findViewById(R.id.unlock_pswd)).getText().toString();
-        if(password.equals("123")){
-            stopService(new Intent(this, FloatingService.class));
-        }
-        finish();
-        MainActivity.mainActivity.finish();
     }
 }
