@@ -3,7 +3,9 @@ package mg.studio.android.survey;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,7 +17,7 @@ public class LockService extends Service {
     private WindowManager wManager;
     private WindowManager.LayoutParams lParams;
     private View view;
-
+    private Handler handler;
     public LockService()
     {
 
@@ -59,8 +61,13 @@ public class LockService extends Service {
                 if (password.equals(sPswd)){
                     onDestroy();
                 }else{
-                    Toast.makeText(LockService.this, "Wrong Password",
-                            Toast.LENGTH_SHORT).show();
+                    handler=new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable(){
+                        public void run(){
+                            Toast.makeText(getApplicationContext(), "Wrong Password",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }
         });

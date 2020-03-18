@@ -3,7 +3,9 @@ package mg.studio.android.survey;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,6 +16,7 @@ public class PswdService extends Service {
     private WindowManager mWindowManager;
     private WindowManager.LayoutParams mLayoutParams;
     private View mView;
+    private Handler handler;
     public PswdService() {
     }
 
@@ -46,16 +49,34 @@ public class PswdService extends Service {
                 String pswd = ((EditText)mView.findViewById(R.id.fill_pswd)).getText().toString();
                 String cpswd = ((EditText)mView.findViewById(R.id.cf_pswd)).getText().toString();
                 if(pswd.length()==0){
-                    Toast.makeText(PswdService.this,
-                            R.string.empty_pswd, Toast.LENGTH_SHORT).show();
+                    handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),
+                                    R.string.empty_pswd, Toast.LENGTH_LONG).show();
+                        }
+                    });
                     return;
                 }else if(cpswd.length()==0){
-                    Toast.makeText(PswdService.this,
-                            R.string.empty_cf_pswd, Toast.LENGTH_SHORT).show();
+                    handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),
+                                    R.string.empty_cf_pswd, Toast.LENGTH_LONG).show();
+                        }
+                    });
                     return;
                 }else if (!pswd.equals(cpswd)){
-                    Toast.makeText(PswdService.this,
-                            R.string.cf_fail, Toast.LENGTH_SHORT).show();
+                    handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), R.string.cf_fail,
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
                     return;
                 }
                 SharedPreferences sp = getSharedPreferences("pswd",MODE_PRIVATE);
