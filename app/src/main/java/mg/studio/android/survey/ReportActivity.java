@@ -193,7 +193,7 @@ public class ReportActivity extends AppCompatActivity {
                     for (int s=0;s<length;s++){
                         JSONObject chbAnswer = checkboxAnswers.getJSONObject(i);
                         strBuilder.append(chbAnswer.getString(String.valueOf(s)));
-                        strBuilder.append(" / ");
+                        strBuilder.append("\n");
                     }
                     aText.setText(strBuilder.toString());
                 }
