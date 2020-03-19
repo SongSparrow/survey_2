@@ -187,8 +187,15 @@ public class ReportActivity extends AppCompatActivity {
                     String tmp = jObject.getJSONObject("answer").getString("1");
                     aText.setText(tmp);
                 } else if (type.equals("checkbox")) {
-                    String tmp = jObject.getJSONArray("answer").toString();
-                    aText.setText(tmp);
+                    JSONArray checkboxAnswers = jObject.getJSONArray("answer");
+                    int length = checkboxAnswers.length(); // length is always larger than 0
+                    StringBuilder strBuilder = new StringBuilder();
+                    for (int s=0;s<length;s++){
+                        JSONObject chbAnswer = checkboxAnswers.getJSONObject(i);
+                        strBuilder.append(chbAnswer.getString(String.valueOf(s)));
+                        strBuilder.append(" / ");
+                    }
+                    aText.setText(strBuilder.toString());
                 }
                 aText.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                         getResources().getDimension(R.dimen.font_size_average));
